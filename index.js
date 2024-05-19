@@ -9,11 +9,11 @@ document.querySelector('#generate-new-map').addEventListener('click', function (
 })
 
 document.querySelector('#resolve-map').addEventListener('click', function () {
-    drawMapResult(resolveMap(map))
+    drawMapResult(resolveMap(map, document.querySelector('#pathfinding-algorithm').value))
 })
 
 document.querySelector('#resolve-map-step-by-step').addEventListener('click', function () {
-    drawMapResultStepByStep(resolveMap(map))
+    drawMapResultStepByStep(resolveMap(map, document.querySelector('#pathfinding-algorithm').value))
 })
 
 document.querySelector('#erase-result').addEventListener('click', function () {
