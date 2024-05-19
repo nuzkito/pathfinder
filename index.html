@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Pathfinder</title>
+        <meta charset="utf-8">
+        <script src="./index.js" type="module" defer></script>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div id="map"></div>
+        <menu>
+            <button id="generate-new-map">Generate new map</button>
+            <label>
+                Width
+                <input type="number" id="map-width" value="20">
+            </label>
+            <label>
+                Height
+                <input type="number" id="map-height" value="20">
+            </label>
+            <button id="resolve-map">Resolve</button>
+            <button id="resolve-map-step-by-step">Resolve step by step</button>
+            <button id="erase-result">Erase result</button>
+            <button id="empty-map">Empty map</button>
+            <button id="toggle-debug">Toggle debug</button>
+        </menu>
+    </body>
+</html>

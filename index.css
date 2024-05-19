@@ -1,0 +1,121 @@
+:root {
+    --wall-color: hsl(0, 0%, 30%);
+    --cell-color: hsl(50, 0%, 90%);
+    --cell-dimension: 40px;
+    --cell-wall-width: 1px;
+    --wall-border: var(--cell-wall-width) solid var(--wall-color);
+    --visited-path-color: hsl(270, 80%, 70%);
+    --valid-path-color: hsl(115, 80%, 70%);
+    --invalid-path-color: hsl(0, 0%, 75%);
+    --start-point-color: hsl(200, 100%, 70%);
+    --end-point-color: hsl(0, 50%, 75%);
+}
+
+#map {
+    display: grid;
+    grid-template-columns: repeat(var(--map-width), var(--cell-dimension));
+    grid-template-rows: repeat(var(--map-height), var(--cell-dimension));
+    width: min-content;
+    height: min-content;
+    margin: auto;
+    border: var(--wall-border);
+    box-sizing: border-box;
+    background-color: var(--wall-color);
+}
+
+menu {
+    text-align: center;
+}
+
+.cell {
+    background-color: var(--cell-color);
+    box-sizing: border-box;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 1px;
+    box-shadow: 0px 0px 1px 0px hsla(0, 0%, 0%, 0.2) inset;
+    position: relative;
+}
+.cell::after {
+    position: absolute;
+    content: " ";
+    display: block;
+    border-radius: 25%;
+    top: 50%;
+    right: 50%;
+    left: 50%;
+    bottom: 50%;
+    transition: all 0.2s;
+}
+
+.visited::after {
+    background-color: var(--visited-path-color);
+    top: 20%;
+    right: 20%;
+    left: 20%;
+    bottom: 20%;
+}
+
+.valid::after {
+    background-color: var(--valid-path-color);
+    top: 15%;
+    right: 15%;
+    left: 15%;
+    bottom: 15%;
+}
+
+.invalid::after {
+    background-color: var(--invalid-path-color);
+    top: 30%;
+    right: 30%;
+    left: 30%;
+    bottom: 30%;
+}
+
+.start::after {
+    background-color: var(--start-point-color);
+    top: 15%;
+    right: 15%;
+    left: 15%;
+    bottom: 15%;
+}
+
+.end::after {
+    background-color: var(--end-point-color);
+    top: 15%;
+    right: 15%;
+    left: 15%;
+    bottom: 15%;
+}
+
+.wall-up {
+    border-top: var(--wall-border);
+    padding-top: 0;
+}
+
+.wall-right {
+    border-right: var(--wall-border);
+    padding-right: 0;
+}
+
+.wall-down {
+    border-bottom: var(--wall-border);
+    padding-bottom: 0;
+}
+
+.wall-left {
+    border-left: var(--wall-border);
+    padding-left: 0;
+}
+
+.wall-up.wall-right.wall-down.wall-left {
+    background-color: var(--wall-border);
+}
+
+.coordinates {
+    display: none;
+}
+
+.debug .coordinates {
+    display: inline;
+}
