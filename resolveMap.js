@@ -10,25 +10,34 @@ export default function resolveMap(map) {
         return result
     }
 
-    result.addExplored(ExploredCell.fromCell(startCell))
-    let actualCell = startCell
-    const nextCells = []
+    const frontier = [startCell]
 
-    while (actualCell !== endCell) {
+    while (true) {
+        if (frontier.length === 0) {
+            return result
+        }
+
+        const actualCell = frontier.pop()
+        result.addExplored(ExploredCell.fromCell(actualCell))
+
+        if (actualCell.endPoint === true) {
+            break;
+        }
+
         if (actualCell.up && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
-            nextCells.push(actualCell.up)
+            frontier.push(actualCell.up)
         }
 
         if (actualCell.right && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
-            nextCells.push(actualCell.right)
+            frontier.push(actualCell.right)
         }
 
         if (actualCell.down && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
-            nextCells.push(actualCell.down)
+            frontier.push(actualCell.down)
         }
 
         if (actualCell.left && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
-            nextCells.push(actualCell.left)
+            frontier.push(actualCell.left)
         }
 
         if (actualCell.isEndOfPath()) {
@@ -40,9 +49,6 @@ export default function resolveMap(map) {
                     .filter(cell => !result.isInvalidCell(cell))[0]
             }
         }
-
-        actualCell = nextCells.pop()
-        result.addExplored(ExploredCell.fromCell(actualCell))
     }
 
     let lastValidCell = startCell
