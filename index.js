@@ -3,6 +3,11 @@ import drawMap, { drawMapResult, drawMapResultStepByStep, eraseMapResult } from 
 import generateMap from './generateMap.js'
 import resolveMap from './resolveMap.js'
 
+document.querySelector('#pathfinding-algorithm').value = localStorage.getItem('pathfinding-algorithm') ?? 'depth-first search'
+document.querySelector('#pathfinding-algorithm').addEventListener('change', function (event) {
+    localStorage.setItem('pathfinding-algorithm', event.target.value)
+})
+
 document.querySelector('#generate-new-map').addEventListener('click', function () {
     map = generateMap(document.querySelector('#map-width').value, document.querySelector('#map-height').value)
     drawMap(map)
