@@ -112,10 +112,10 @@ menu {
     background-color: var(--wall-border);
 }
 
-.coordinates {
+.debug-info {
     display: none;
 }
 
-.debug .coordinates {
+.debug .debug-info {
     display: inline;
 }

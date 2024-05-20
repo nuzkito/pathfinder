@@ -1,3 +1,5 @@
+import { getCost } from "./greedyBestFirstSearch.js"
+
 export function eraseMapResult() {
     document.querySelector('#map').childNodes.forEach(child => child.classList.remove('visited', 'valid', 'invalid'))
 }
@@ -54,8 +56,10 @@ function drawCell(map, cell) {
     div.style.gridArea = `${map.height - cell.coordinates.y} / ${cell.coordinates.x + 1}`
 
     const span = document.createElement('span')
-    span.innerText = `${cell.coordinates.x},${cell.coordinates.y}`
-    span.classList.add('coordinates')
+    span.appendChild(document.createTextNode(`${cell.coordinates.x},${cell.coordinates.y}`))
+    span.appendChild(document.createElement('br'))
+    span.appendChild(document.createTextNode(getCost(cell, map.cells.find(cell => cell.endPoint))))
+    span.classList.add('debug-info')
     div.appendChild(span)
 
     if (!cell.up) {

@@ -1,7 +1,7 @@
 import ExploredCell from "./ExploredCell.js"
 import Result from "./Result.js"
 
-export default function breadthFirstSearch(map) {
+export default function greedyBestFirstSearch(map) {
     const endCell = map.cells.find(cell => cell.endPoint)
     const startCell = map.cells.find(cell => cell.startPoint)
     const result = new Result()
@@ -17,7 +17,9 @@ export default function breadthFirstSearch(map) {
             return result
         }
 
-        const actualCell = frontier.shift()
+        const actualCell = frontier.sort(function (a, b) {
+            return getCost(a, endCell) - getCost(b, endCell)
+        }).shift()
         result.addExplored(ExploredCell.fromCell(actualCell))
 
         if (actualCell.endPoint === true) {
@@ -40,19 +42,19 @@ export default function breadthFirstSearch(map) {
             break;
         }
 
-        if (actualCell.up && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
+        if (actualCell.up && !frontier.some(cell => cell === actualCell.up) && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
             frontier.push(actualCell.up)
         }
 
-        if (actualCell.right && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
+        if (actualCell.right && !frontier.some(cell => cell === actualCell.right) && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
             frontier.push(actualCell.right)
         }
 
-        if (actualCell.down && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
+        if (actualCell.down && !frontier.some(cell => cell === actualCell.down) && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
             frontier.push(actualCell.down)
         }
 
-        if (actualCell.left && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
+        if (actualCell.left && !frontier.some(cell => cell === actualCell.left) && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
             frontier.push(actualCell.left)
         }
 
@@ -75,8 +77,7 @@ export default function breadthFirstSearch(map) {
             .filter(cell => cell)
             .filter(cell => result.isExploredCell(cell))
             .filter(cell => !result.isInvalidCell(cell))
-            .filter(cell => !result.isValidCell(cell))
-            [0]
+            .filter(cell => !result.isValidCell(cell))[0]
     }
 
     result.addExplored(ExploredCell.fromCell(endCell).valid())
@@ -121,4 +122,8 @@ function checkIfItIsInvalidAfterFindSolution(cell, result) {
     }
 
     return true
+}
+
+export function getCost(cell, end) {
+    return Math.abs(cell.coordinates.x - end.coordinates.x) + Math.abs(cell.coordinates.y - end.coordinates.y)
 }
