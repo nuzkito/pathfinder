@@ -37,55 +37,49 @@ menu {
     position: relative;
 }
 .cell::after {
+    --path-indicator-margin: 50%;
+    --path-color: trasparent;
     position: absolute;
     content: " ";
     display: block;
     border-radius: 25%;
-    top: 50%;
-    right: 50%;
-    left: 50%;
-    bottom: 50%;
+    top: var(--path-indicator-margin);
+    right: var(--path-indicator-margin);
+    left: var(--path-indicator-margin);
+    bottom: var(--path-indicator-margin);
     transition: all 0.2s;
+    background-color: var(--path-color);
 }
 
 .visited::after {
-    background-color: var(--visited-path-color);
-    top: 20%;
-    right: 20%;
-    left: 20%;
-    bottom: 20%;
+    --path-indicator-margin: 20%;
+    --path-color: var(--visited-path-color);
 }
 
 .valid::after {
-    background-color: var(--valid-path-color);
-    top: 15%;
-    right: 15%;
-    left: 15%;
-    bottom: 15%;
+    --path-indicator-margin: 15%;
+    --path-color: var(--valid-path-color);
 }
 
 .invalid::after {
-    background-color: var(--invalid-path-color);
-    top: 30%;
-    right: 30%;
-    left: 30%;
-    bottom: 30%;
+    --path-indicator-margin: 30%;
+    --path-color: var(--invalid-path-color);
 }
 
 .start::after {
-    background-color: var(--start-point-color);
-    top: 15%;
-    right: 15%;
-    left: 15%;
-    bottom: 15%;
+    --path-indicator-margin: 20%;
+    --path-color: var(--start-point-color);
 }
 
 .end::after {
-    background-color: var(--end-point-color);
-    top: 15%;
-    right: 15%;
-    left: 15%;
-    bottom: 15%;
+    --path-indicator-margin: 20%;
+    --path-color: var(--end-point-color);
+}
+.start.valid::after {
+    --path-indicator-margin: 15%;
+}
+.end.valid::after {
+    --path-indicator-margin: 15%;
 }
 
 .wall-up {
