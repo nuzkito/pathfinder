@@ -1,6 +1,22 @@
 import ExploredCell from "./ExploredCell.js"
 import Result from "./Result.js"
 
+class Stack {
+    nodes = []
+
+    add(node) {
+        this.nodes.push(node)
+    }
+
+    isEmpty() {
+        return this.nodes.length === 0
+    }
+
+    next() {
+        return this.nodes.pop()
+    }
+}
+
 export default function depthFirstSearch(map) {
     const endCell = map.cells.find(cell => cell.endPoint)
     const startCell = map.cells.find(cell => cell.startPoint)
@@ -10,14 +26,15 @@ export default function depthFirstSearch(map) {
         return result
     }
 
-    const frontier = [startCell]
+    const frontier = new Stack()
+    frontier.add(startCell)
 
     while (true) {
-        if (frontier.length === 0) {
+        if (frontier.isEmpty()) {
             return result
         }
 
-        const actualCell = frontier.pop()
+        const actualCell = frontier.next()
         result.addExplored(ExploredCell.fromCell(actualCell))
 
         if (actualCell.endPoint === true) {
@@ -25,19 +42,19 @@ export default function depthFirstSearch(map) {
         }
 
         if (actualCell.up && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
-            frontier.push(actualCell.up)
+            frontier.add(actualCell.up)
         }
 
         if (actualCell.right && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
-            frontier.push(actualCell.right)
+            frontier.add(actualCell.right)
         }
 
         if (actualCell.down && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
-            frontier.push(actualCell.down)
+            frontier.add(actualCell.down)
         }
 
         if (actualCell.left && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
-            frontier.push(actualCell.left)
+            frontier.add(actualCell.left)
         }
 
         if (actualCell.isEndOfPath()) {

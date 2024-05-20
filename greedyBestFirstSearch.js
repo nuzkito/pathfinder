@@ -1,6 +1,29 @@
 import ExploredCell from "./ExploredCell.js"
 import Result from "./Result.js"
 
+class Frontier {
+    nodes = []
+    pathCostCallback
+
+    constructor(pathCostCallback = nodes => nodes) {
+        this.pathCostCallback = pathCostCallback
+    }
+
+    add(node) {
+        if (!this.nodes.some(cell => cell === node)) {
+            this.nodes.push(node)
+        }
+    }
+
+    isEmpty() {
+        return this.nodes.length === 0
+    }
+
+    next() {
+        return this.pathCostCallback(this.nodes).shift()
+    }
+}
+
 export default function greedyBestFirstSearch(map) {
     const endCell = map.cells.find(cell => cell.endPoint)
     const startCell = map.cells.find(cell => cell.startPoint)
@@ -10,21 +33,24 @@ export default function greedyBestFirstSearch(map) {
         return result
     }
 
-    const frontier = [startCell]
+    const frontier = new Frontier(nodes => {
+        return nodes.sort(function (a, b) {
+            return getCost(a, endCell) - getCost(b, endCell)
+        })
+    })
+    frontier.add(startCell)
 
     while (true) {
-        if (frontier.length === 0) {
+        if (frontier.isEmpty()) {
             return result
         }
 
-        const actualCell = frontier.sort(function (a, b) {
-            return getCost(a, endCell) - getCost(b, endCell)
-        }).shift()
+        const actualCell = frontier.next()
         result.addExplored(ExploredCell.fromCell(actualCell))
 
         if (actualCell.endPoint === true) {
-            while (frontier.length > 0) {
-                let invalidCell = frontier.shift()
+            while (!frontier.isEmpty()) {
+                let invalidCell = frontier.next()
 
                 if (result.isExploredCell(invalidCell)) {
                     result.addExplored(ExploredCell.fromCell(invalidCell).invalid())
@@ -36,26 +62,26 @@ export default function greedyBestFirstSearch(map) {
                     .filter(cell => !result.isInvalidCell(cell))[0]
 
                 if (checkIfItIsInvalidAfterFindSolution(invalidCell, result)) {
-                    frontier.push(invalidCell)
+                    frontier.add(invalidCell)
                 }
             }
             break;
         }
 
-        if (actualCell.up && !frontier.some(cell => cell === actualCell.up) && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
-            frontier.push(actualCell.up)
+        if (actualCell.up && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
+            frontier.add(actualCell.up)
         }
 
-        if (actualCell.right && !frontier.some(cell => cell === actualCell.right) && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
-            frontier.push(actualCell.right)
+        if (actualCell.right && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
+            frontier.add(actualCell.right)
         }
 
-        if (actualCell.down && !frontier.some(cell => cell === actualCell.down) && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
-            frontier.push(actualCell.down)
+        if (actualCell.down && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
+            frontier.add(actualCell.down)
         }
 
-        if (actualCell.left && !frontier.some(cell => cell === actualCell.left) && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
-            frontier.push(actualCell.left)
+        if (actualCell.left && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
+            frontier.add(actualCell.left)
         }
 
         if (actualCell.isEndOfPath()) {

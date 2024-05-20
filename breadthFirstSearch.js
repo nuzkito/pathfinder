@@ -1,6 +1,22 @@
 import ExploredCell from "./ExploredCell.js"
 import Result from "./Result.js"
 
+class Queue {
+    nodes = []
+
+    add(node) {
+        this.nodes.push(node)
+    }
+
+    isEmpty() {
+        return this.nodes.length === 0
+    }
+
+    next() {
+        return this.nodes.shift()
+    }
+}
+
 export default function breadthFirstSearch(map) {
     const endCell = map.cells.find(cell => cell.endPoint)
     const startCell = map.cells.find(cell => cell.startPoint)
@@ -10,19 +26,20 @@ export default function breadthFirstSearch(map) {
         return result
     }
 
-    const frontier = [startCell]
+    const frontier = new Queue()
+    frontier.add(startCell)
 
     while (true) {
-        if (frontier.length === 0) {
+        if (frontier.isEmpty()) {
             return result
         }
 
-        const actualCell = frontier.shift()
+        const actualCell = frontier.next()
         result.addExplored(ExploredCell.fromCell(actualCell))
 
         if (actualCell.endPoint === true) {
-            while (frontier.length > 0) {
-                let invalidCell = frontier.shift()
+            while (!frontier.isEmpty()) {
+                let invalidCell = frontier.next()
 
                 if (result.isExploredCell(invalidCell)) {
                     result.addExplored(ExploredCell.fromCell(invalidCell).invalid())
@@ -34,26 +51,26 @@ export default function breadthFirstSearch(map) {
                     .filter(cell => !result.isInvalidCell(cell))[0]
 
                 if (checkIfItIsInvalidAfterFindSolution(invalidCell, result)) {
-                    frontier.push(invalidCell)
+                    frontier.add(invalidCell)
                 }
             }
             break;
         }
 
         if (actualCell.up && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
-            frontier.push(actualCell.up)
+            frontier.add(actualCell.up)
         }
 
         if (actualCell.right && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
-            frontier.push(actualCell.right)
+            frontier.add(actualCell.right)
         }
 
         if (actualCell.down && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
-            frontier.push(actualCell.down)
+            frontier.add(actualCell.down)
         }
 
         if (actualCell.left && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
-            frontier.push(actualCell.left)
+            frontier.add(actualCell.left)
         }
 
         if (actualCell.isEndOfPath()) {
