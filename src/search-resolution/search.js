@@ -39,9 +39,8 @@ export default function search(map, frontier) {
             break;
         }
 
-        actualCell.getConnectedCells()
-            .filter(cell => !result.exploredCells.some(explored => explored.cell === cell))
-            .forEach(cell => frontier.add(cell))
+        actualCell.actions.filter(action => !result.exploredCells.some(explored => explored.cell === action.state))
+            .forEach(action => frontier.add(action.state))
 
         if (actualCell.isEndOfPath()) {
             let invalidCell = actualCell
