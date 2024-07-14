@@ -13,18 +13,18 @@ export default class Action {
     }
 
     static moveUp(state) {
-        return new Action(self.up, state)
+        return new Action(Action.up, state)
     }
 
     static moveRight(state) {
-        return new Action(self.up, state)
+        return new Action(Action.right, state)
     }
 
     static moveDown(state) {
-        return new Action(self.up, state)
+        return new Action(Action.down, state)
     }
 
     static moveLeft(state) {
-        return new Action(self.up, state)
+        return new Action(Action.left, state)
     }
 }

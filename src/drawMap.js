@@ -1,3 +1,4 @@
+import Action from "./map-generation/Action.js"
 import { getCost } from "./search-resolution/greedyBestFirstSearch.js"
 
 export function eraseMapResult() {
@@ -62,19 +63,19 @@ function drawCell(map, cell) {
     span.classList.add('debug-info')
     div.appendChild(span)
 
-    if (!cell.up) {
+    if (!cell.actions.some(action => action.action === Action.up)) {
         div.classList.add('wall-up')
     }
 
-    if (!cell.right) {
+    if (!cell.actions.some(action => action.action === Action.right)) {
         div.classList.add('wall-right')
     }
 
-    if (!cell.down) {
+    if (!cell.actions.some(action => action.action === Action.down)) {
         div.classList.add('wall-down')
     }
 
-    if (!cell.left) {
+    if (!cell.actions.some(action => action.action === Action.left)) {
         div.classList.add('wall-left')
     }
 
