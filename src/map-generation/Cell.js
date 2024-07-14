@@ -11,7 +11,7 @@ export default class Cell {
         this.coordinates = coordinates
     }
 
-    addTransitableCell(cell) {
+    addConnectedCell(cell) {
         if (this.coordinates.x + 1 === cell.coordinates.x) {
             this.right = cell
             cell.left = this
@@ -25,6 +25,10 @@ export default class Cell {
             this.down = cell
             cell.up = this
         }
+    }
+
+    getConnectedCells() {
+        return [this.up, this.right, this.down, this.left].filter(cell => cell)
     }
 
     isEndOfPath() {

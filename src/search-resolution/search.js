@@ -28,8 +28,7 @@ export default function search(map, frontier) {
                     result.addExplored(ExploredCell.fromCell(invalidCell).invalid())
                 }
 
-                invalidCell = [invalidCell.up, invalidCell.right, invalidCell.down, invalidCell.left]
-                    .filter(cell => cell)
+                invalidCell = invalidCell.getConnectedCells()
                     .filter(cell => result.isExploredCell(cell))
                     .filter(cell => !result.isInvalidCell(cell))[0]
 
@@ -60,8 +59,7 @@ export default function search(map, frontier) {
             let invalidCell = actualCell
             while (invalidCell && isInvalid(invalidCell, result)) {
                 result.addExplored(ExploredCell.fromCell(invalidCell).invalid())
-                invalidCell = [invalidCell.up, invalidCell.right, invalidCell.down, invalidCell.left]
-                    .filter(cell => cell)
+                invalidCell = invalidCell.getConnectedCells()
                     .filter(cell => !result.isInvalidCell(cell))[0]
             }
         }
@@ -71,8 +69,7 @@ export default function search(map, frontier) {
 
     while (lastValidCell && lastValidCell !== endCell) {
         result.addExplored(ExploredCell.fromCell(lastValidCell).valid())
-        lastValidCell = [lastValidCell.up, lastValidCell.right, lastValidCell.down, lastValidCell.left]
-            .filter(cell => cell)
+        lastValidCell = lastValidCell.getConnectedCells()
             .filter(cell => result.isExploredCell(cell))
             .filter(cell => !result.isInvalidCell(cell))
             .filter(cell => !result.isValidCell(cell))[0]
@@ -112,8 +109,7 @@ function checkIfItIsInvalidAfterFindSolution(cell, result) {
     }
 
     if (cell.isIntersection()) {
-        return [cell.up, cell.right, cell.down, cell.left]
-            .filter(cell => cell)
+        return cell.getConnectedCells()
             .filter(cell => result.isExploredCell(cell))
             .filter(cell => !result.isInvalidCell(cell))
             .length === 1

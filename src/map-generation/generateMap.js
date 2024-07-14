@@ -13,7 +13,7 @@ export default function generateMap(width, height) {
     while (cellsInPaths.length < width * height) {
         while(actualCoordinates = nextRandomCoordinates(cellsInPaths, map, lastCell.coordinates)) {
             actualCell = map.getCellByCoordinates(actualCoordinates)
-            actualCell.addTransitableCell(lastCell)
+            actualCell.addConnectedCell(lastCell)
             cellsInPaths.push(actualCell)
             lastCell = actualCell
         }
