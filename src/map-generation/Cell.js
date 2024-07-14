@@ -38,25 +38,11 @@ export default class Cell {
         }
     }
 
-    getConnectedCells() {
-        return [this.up, this.right, this.down, this.left].filter(cell => cell)
-    }
-
     isEndOfPath() {
-        return [
-            this.up,
-            this.right,
-            this.down,
-            this.left,
-        ].filter(n=>n).length < 2;
+        return this.actions.length < 2
     }
 
     isIntersection() {
-        return [
-            this.up,
-            this.right,
-            this.down,
-            this.left,
-        ].filter(cell => cell).length > 2;
+        return this.actions.length > 2
     }
 }
