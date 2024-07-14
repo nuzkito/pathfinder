@@ -1,4 +1,4 @@
-import { getCost } from "./greedyBestFirstSearch.js"
+import { getCost } from "./search-resolution/greedyBestFirstSearch.js"
 
 export function eraseMapResult() {
     document.querySelector('#map').childNodes.forEach(child => child.classList.remove('visited', 'valid', 'invalid'))

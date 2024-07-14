@@ -1,7 +1,7 @@
-import Map from './Map.js'
+import Map from './map-generation/Map.js'
 import drawMap, { drawMapResult, drawMapResultStepByStep, eraseMapResult } from './drawMap.js'
-import generateMap from './generateMap.js'
-import resolveMap from './resolveMap.js'
+import generateMap from './map-generation/generateMap.js'
+import resolveMap from './search-resolution/resolveMap.js'
 
 document.querySelector('#pathfinding-algorithm').value = localStorage.getItem('pathfinding-algorithm') ?? 'depth-first search'
 document.querySelector('#pathfinding-algorithm').addEventListener('change', function (event) {
