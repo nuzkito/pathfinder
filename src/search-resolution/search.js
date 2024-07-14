@@ -39,21 +39,9 @@ export default function search(map, frontier) {
             break;
         }
 
-        if (actualCell.up && !result.exploredCells.some(explored => explored.cell === actualCell.up)) {
-            frontier.add(actualCell.up)
-        }
-
-        if (actualCell.right && !result.exploredCells.some(explored => explored.cell === actualCell.right)) {
-            frontier.add(actualCell.right)
-        }
-
-        if (actualCell.down && !result.exploredCells.some(explored => explored.cell === actualCell.down)) {
-            frontier.add(actualCell.down)
-        }
-
-        if (actualCell.left && !result.exploredCells.some(explored => explored.cell === actualCell.left)) {
-            frontier.add(actualCell.left)
-        }
+        actualCell.getConnectedCells()
+            .filter(cell => !result.exploredCells.some(explored => explored.cell === cell))
+            .forEach(cell => frontier.add(cell))
 
         if (actualCell.isEndOfPath()) {
             let invalidCell = actualCell
@@ -90,8 +78,7 @@ function isInvalid(cell, result) {
     }
 
     if (cell.isIntersection()) {
-        return [cell.up, cell.right, cell.down, cell.left]
-            .filter(cell => cell)
+        return cell.getConnectedCells()
             .filter(cell => !result.isInvalidCell(cell))
             .length === 1
     }
