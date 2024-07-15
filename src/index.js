@@ -3,30 +3,17 @@ import drawMap, { drawMapResult, drawMapResultStepByStep, eraseMapResult } from 
 import generateMap from './map-generation/generateMap.js'
 import resolveMap from './search-resolution/resolveMap.js'
 
-document.querySelector('#pathfinding-algorithm').value = localStorage.getItem('pathfinding-algorithm') ?? 'depth-first search'
-document.querySelector('#pathfinding-algorithm').addEventListener('change', function (event) {
-    localStorage.setItem('pathfinding-algorithm', event.target.value)
-})
+/* Generate map form */
+document.querySelector('#generate-map').addEventListener('submit', function (event) {
+    const width = event.target.querySelector('#map-width').value
+    const height = event.target.querySelector('#map-height').value
 
-document.querySelector('#generate-new-map').addEventListener('click', function () {
-    map = generateMap(document.querySelector('#map-width').value, document.querySelector('#map-height').value)
-    drawMap(map)
-})
+    if (event.submitter === event.target.querySelector('#generate-new-map')) {
+        map = generateMap(width, height)
+    } else if (event.submitter === event.target.querySelector('#empty-map')) {
+        map = new Map(width, height)
+    }
 
-document.querySelector('#resolve-map').addEventListener('click', function () {
-    drawMapResult(resolveMap(map, document.querySelector('#pathfinding-algorithm').value))
-})
-
-document.querySelector('#resolve-map-step-by-step').addEventListener('click', function () {
-    drawMapResultStepByStep(resolveMap(map, document.querySelector('#pathfinding-algorithm').value))
-})
-
-document.querySelector('#erase-result').addEventListener('click', function () {
-    eraseMapResult()
-})
-
-document.querySelector('#empty-map').addEventListener('click', function () {
-    map = new Map(document.querySelector('#map-width').value, document.querySelector('#map-height').value)
     drawMap(map)
 })
 
@@ -40,15 +27,23 @@ document.querySelector('#map-height').addEventListener('change', function (event
     localStorage.setItem('map-height', event.target.value)
 })
 
-document.querySelector('#toggle-debug').addEventListener('click', function () {
-    localStorage.setItem('debug', localStorage.getItem('debug') === 'debug' ? '' : 'debug')
-    setDebugStatus()
+/* Resolve map form */
+document.querySelector('#resolve-map').addEventListener('submit', function (event) {
+    if (event.submitter === event.target.querySelector('#resolve')) {
+        drawMapResult(resolveMap(map, event.target.querySelector('#pathfinding-algorithm').value))
+    } else if (event.submitter === event.target.querySelector('#resolve-step-by-step')) {
+        drawMapResultStepByStep(resolveMap(map, event.target.querySelector('#pathfinding-algorithm').value))
+    } else if (event.submitter === event.target.querySelector('#erase-result')) {
+        eraseMapResult()
+    }
 })
 
-let map = generateMap(document.querySelector('#map-width').value, document.querySelector('#map-height').value)
-drawMap(map)
-setDebugStatus()
+document.querySelector('#pathfinding-algorithm').value = localStorage.getItem('pathfinding-algorithm') ?? 'depth-first search'
+document.querySelector('#pathfinding-algorithm').addEventListener('change', function (event) {
+    localStorage.setItem('pathfinding-algorithm', event.target.value)
+})
 
+/* Debug form */
 function setDebugStatus() {
     if (localStorage.getItem('debug') === 'debug') {
         document.querySelector('#map').classList.add('debug')
@@ -56,3 +51,13 @@ function setDebugStatus() {
         document.querySelector('#map').classList.remove('debug')
     }
 }
+
+document.querySelector('#toggle-debug').addEventListener('submit', function () {
+    localStorage.setItem('debug', localStorage.getItem('debug') === 'debug' ? '' : 'debug')
+    setDebugStatus()
+})
+
+/* First draw after load */
+let map = generateMap(document.querySelector('#map-width').value, document.querySelector('#map-height').value)
+drawMap(map)
+setDebugStatus()

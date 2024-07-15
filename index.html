@@ -9,26 +9,35 @@
     <body>
         <div id="map"></div>
         <menu>
-            <select id="pathfinding-algorithm">
-                <option value="depth-first search">Depth-first search</option>
-                <option value="breadth-first search">Breadth-first search</option>
-                <option value="greedy best-first search">Greedy best-first search</option>
-                <option value="none">None</option>
-            </select>
-            <button id="generate-new-map">Generate new map</button>
-            <label>
-                Width
-                <input type="number" id="map-width" value="20">
-            </label>
-            <label>
-                Height
-                <input type="number" id="map-height" value="20">
-            </label>
-            <button id="resolve-map">Resolve</button>
-            <button id="resolve-map-step-by-step">Resolve step by step</button>
-            <button id="erase-result">Erase result</button>
-            <button id="empty-map">Empty map</button>
-            <button id="toggle-debug">Toggle debug</button>
+            <form action="#" id="generate-map">
+                <label>
+                    Width
+                    <input type="number" id="map-width" value="20">
+                </label>
+                <label>
+                    Height
+                    <input type="number" id="map-height" value="20">
+                </label>
+                <button id="generate-new-map">Generate new map</button>
+                <button id="empty-map">Empty map</button>
+            </form>
+            <form action="#" id="resolve-map">
+                <label>
+                    Search algorithm
+                    <select id="pathfinding-algorithm">
+                        <option value="depth-first search">Depth-first search</option>
+                        <option value="breadth-first search">Breadth-first search</option>
+                        <option value="greedy best-first search">Greedy best-first search</option>
+                        <option value="none">None</option>
+                    </select>
+                </label>
+                <button id="resolve">Resolve</button>
+                <button id="resolve-step-by-step">Resolve step by step</button>
+                <button id="erase-result">Erase result</button>
+            </form>
+            <form action="#" id="toggle-debug">
+                <button type="submit">Toggle debug</button>
+            </form>
         </menu>
     </body>
 </html>

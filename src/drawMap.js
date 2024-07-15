@@ -59,7 +59,10 @@ function drawCell(map, cell) {
     const span = document.createElement('span')
     span.appendChild(document.createTextNode(`${cell.coordinates.x},${cell.coordinates.y}`))
     span.appendChild(document.createElement('br'))
-    span.appendChild(document.createTextNode(getCost(cell, map.cells.find(cell => cell.endPoint))))
+    const end = map.cells.find(cell => cell.endPoint)
+    if (end) {
+        span.appendChild(document.createTextNode(getCost(cell, end)))
+    }
     span.classList.add('debug-info')
     div.appendChild(span)
 
